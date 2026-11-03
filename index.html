@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+    <head>
+        <script src = "script.js" defer></script>
+        <link rel="stylesheet" href="style.css">
+        <title>IP Address Assignments | IP Address Tracker</title>
+    </head>
+    <body>
+        <button id="login_button" onclick="window.location.href='login.html'">Not Logged In</button>
+        <div class=center>
+            <h1>IP Address Assignments</h1>
+            <input type="text" id="search" placeholder="search">
+            <table id = "assigned_addresses">
+                <thead>
+                    <tr>
+                        <th>Address</th>
+                        <th>Owner</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody id = "assigned_addresses_rows">
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
