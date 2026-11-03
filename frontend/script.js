@@ -2,6 +2,11 @@ window.addEventListener('login', (e) => {
     document.getElementById('login_button').innerText = e.detail;
 });
 
+const logout_button = document.getElementById("logout_button");
+logout_button.addEventListener('click', async () => {
+    let response = await fetch("http://192.168.111.8:5000/api/logout", {method: 'POST'})
+});
+
 
 const searchBox = document.getElementById("search");
 searchBox.addEventListener('keydown', function(event) {

@@ -13,23 +13,19 @@ conn_str: str = f"postgresql://project_user:{password}@localhost:5432/project_db
 conn = psycopg.connect(conn_str)
 cur = conn.cursor()
 
-from flask import Flask, request
+from flask import Flask, request, send_from_directory
 from flask_cors import CORS
 from flask_login import (LoginManager, UserMixin, current_user, login_required, login_user, logout_user)
 from werkzeug.security import check_password_hash
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder=os.path.abspath('../frontend'))
 # CORS(app, supports_credentials = True, origins=["http://127.0.0.1:5000", "http://192.168.110.146:8000", "http://192.168.111.8:5000"])
 CORS(app,resources={
     r"/api/*": {
         "origins": ["http://127.0.0.1:8000","http://192.168.110.146:8000"],
         "supports_credentials": True
+        }
     })
-app.config.update(
-    SESSION_COOKIE_SECURE=False,     # Set to True in production with HTTPS
-    SESSION_COOKIE_HTTPONLY=True,
-    SESSION_COOKIE_SAMESITE='None'   # Required for cross-origin cookie sharing
-)
 # CORS(app)
 app.secret_key = os.environ["SECRET_KEY"]
 
@@ -58,6 +54,10 @@ def load_user(owner_id):
 def unauthorized():
     return {"error": "You must log in"}, 401
 
+@app.route("/")
+def index():
+     return send_from_directory(app.static_folder, 'index.html')
+
 @app.route("/api/login", methods=["POST"])
 def login():
     data = request.get_json()
@@ -75,8 +75,13 @@ def login():
     login_user(user, remember=True)
     return {"message": f"Logged in as {row[1]}, Admin: {row[2]}"}#, user: user}
 
+@app.route("/api/logout", methods=["POST"])
+@login_required
+def logout():
+    logout_user()
+    return {"message": "Logged out"}
+
 @app.route("/api/search")
-# @login_required
 def search():
     print(current_user)
     query = request.args.get("q", "")
