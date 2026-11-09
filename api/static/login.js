@@ -25,6 +25,7 @@ form.addEventListener('submit', async (event) => {
         const data = await response.json();
         const data_text = JSON.stringify(data);
         console.log("Good: " + data_text);
+	localStorage.setItem("name", formJSON["username"])
 	window.location.href = data["home"]
 
     } catch (error) {

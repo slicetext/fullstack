@@ -73,8 +73,15 @@ function update_loggedin() {
 	login_button.innerHTML = name;
 }
 
+async function my_addresses() {
+	let response = await fetch("http://192.168.111.8:5000/api/user_addresses")
+	let json = await response.json()
+	console.log(json)
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-	update_assigned();
+	//update_assigned();
 	update_loggedin();
+	my_addresses();
 });
 
