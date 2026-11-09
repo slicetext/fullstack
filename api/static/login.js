@@ -1,5 +1,3 @@
-import {updateLoggedIn} from './state.js';
-
 const form = document.getElementById('login_form');
 
 form.addEventListener('submit', async (event) => {
@@ -27,8 +25,7 @@ form.addEventListener('submit', async (event) => {
         const data = await response.json();
         const data_text = JSON.stringify(data);
         console.log("Good: " + data_text);
-        updateLoggedIn(formJSON["username"]);
-        window.location.href='index.html'
+	window.location.href = data["home"]
 
     } catch (error) {
         console.error("Error submitting form: " + error)

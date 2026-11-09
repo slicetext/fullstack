@@ -1,3 +1,5 @@
+let login_button = document.getElementById("login_button")
+
 window.addEventListener('login', (e) => {
     document.getElementById('login_button').innerText = e.detail;
 });
@@ -5,8 +7,15 @@ window.addEventListener('login', (e) => {
 const logout_button = document.getElementById("logout_button");
 logout_button.addEventListener('click', async () => {
     let response = await fetch("http://192.168.111.8:5000/api/logout", {method: 'POST'})
+    localStorage.setItem("name", "Not Logged In")
+    update_loggedin()
 });
 
+async function get_my_addresses() {
+	let response = await fetch("http://192.168.111.8:5000/api/user_addresses")
+	let json = await response.json()
+	console.log(json)
+}
 
 const searchBox = document.getElementById("search");
 searchBox.addEventListener('keydown', function(event) {
@@ -59,4 +68,13 @@ async function update_assigned(search) {
     });
 }
 
-update_assigned()
+function update_loggedin() {
+	let name = localStorage.getItem("name")
+	login_button.innerHTML = name;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+	update_assigned();
+	update_loggedin();
+});
+
