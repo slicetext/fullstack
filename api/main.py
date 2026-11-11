@@ -105,8 +105,20 @@ def user_addresses():
     )
     return cur.fetchall()
 
+@app.route("/api/remove_address", methods=["POST"])
+@login_required
+def remove_address():
+    data = request.get_json()
+    if not data or ("address" not in data):
+        return {"error": "address required"}
+    
+    cur.execute(f"DELETE FROM ip WHERE owner_id = '{current_user.id}' AND ip_address = '{data['address']}';")
+    return "good"
+
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=5000)
 
 cur.close()
 conn.close()
+
+

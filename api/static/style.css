@@ -35,3 +35,11 @@ th {
     position: fixed;
     left: 90%
 }
+
+.remove-btn {
+	background-color: #ffaaaa;
+}
+
+#get-address-btn {
+	background-color: #bbccff;
+}

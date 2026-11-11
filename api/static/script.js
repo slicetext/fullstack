@@ -77,6 +77,38 @@ async function my_addresses() {
 	let response = await fetch("http://192.168.111.8:5000/api/user_addresses")
 	let json = await response.json()
 	console.log(json)
+	my_addresses = document.getElementById("my_addresses")
+	json.forEach((entry) => {
+		const row = my_addresses.insertRow(-1);
+		const address = row.insertCell(0);
+		address.textContent = entry[0]
+		const description = row.insertCell(1);
+		description.textContent = entry[2]
+
+		const remove = row.insertCell(2);
+
+		const button = document.createElement('button');
+		button.textContent = "Remove";
+		button.classList.add("remove-btn")
+		button.dataset.address = entry[0]
+
+		button.addEventListener("click", async () => {
+			let delete_response = await fetch("http://192.168.111.8:5000/api/remove_address", {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify( { 'address': event.target.dataset.address} )
+			})
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			window.location.reload()
+
+		});
+
+		remove.appendChild(button)
+	});
 }
 
 document.addEventListener("DOMContentLoaded", () => {
